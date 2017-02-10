@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+
+
+
+        <h:form id="compteForm">
+            <h1><h:outputText value="List"/></h1>
+            <p:dataTable id="dataListCompte" value="#{compteController.items}" var="item">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"/>
+                    </f:facet>
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Solde"/>
+                    </f:facet>
+                    <h:outputText value="#{item.solde}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Action"/>
+                    </f:facet>
+                    <p:commandButton actionListener="#{compteController.remove(item)}"  update="dataListCompte" value="Delete"/>
+                    <p:commandButton action="#{compteController.update(item)}" value="Update" />
+                    <p:commandButton actionListener="#{compteController.detail(item)}" value="Detail"  update=":operationForm:dataListOperation"/>
+
+                </p:column>
+            </p:dataTable><br></br>
+
+            <p:commandLink action="/compte/Create" value="Creer"></p:commandLink><br></br><br></br>
+            <p:commandLink action="/compte/Debiter" value="Debiter"></p:commandLink>  <br></br><br></br>
+        </h:form>
+        
+        <h:form id="operationForm">
+            <p:dataTable id="dataListOperation" value="#{compteController.selected.operations}" var="item">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"/>
+                    </f:facet>
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Type"/>
+                    </f:facet>
+                    <h:outputText value="#{item.type}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Montant"/>
+                    </f:facet>
+                    <h:outputText value="#{item.montant}"/>
+                </p:column>
+
+            </p:dataTable><br></br>
+        </h:form>
+
+        <h:form>
+            <h1><h:outputText value="Recherche"/></h1>
+            <p:panelGrid columns="6">
+                <p:outputLabel value="Solde Min:" for="soldeMin" />
+                <p:inputText id="soldeMin" value="#{compteController.soldeMin}" title="soldeMin" />
+                <p:outputLabel value="Solde Max:" for="soldeMax" />
+                <p:inputText id="soldeMax" value="#{compteController.soldeMax}" title="SoldeMax" />
+                <p:outputLabel value="Id:" for="idRech" />
+                <p:inputText id="idRech" value="#{compteController.idRech}" title="IdRech" />
+                <p:commandButton actionListener="#{compteController.recherche()}" value="Recherche" update=":compteForm:dataListCompte"/>
+            </p:panelGrid>
+        </h:form>
+
+
+    </h:body>
+</html>
+
